@@ -13,7 +13,7 @@ class TransactionRepository
      * @param array $filters
      * @return array
      */
-    public function getFilteredTransactions(array $filters): array
+    public function getFilteredTransactions(array $filters, int $limit = 10, int $offset = 0): array
     {
         $provider = $filters['provider'] ?? null;
         $statusCode = $filters['statusCode'] ?? null;
@@ -36,7 +36,16 @@ class TransactionRepository
                 $this->readFilteredJsonData('DataProviderY.json', ProviderY::class, $statusCode, $amountMin, $amountMax, $currency)
             );
         }
-        return $transactions;
+
+        $totalTransactions = count($transactions);
+        $paginatedTransactions = array_slice($transactions, $offset, $limit);
+
+        return [
+            'data' => $paginatedTransactions,
+            'total' => $totalTransactions,
+            'limit' => $limit,
+            'offset' => $offset,
+        ];
     }
 
     /**

@@ -44,6 +44,9 @@ class TransactionController extends Controller
             'currency' => $request->input('currency'),
         ];
 
-        return response()->json($this->transactionService->getTransactions($filters));
+        $limit = $request->input('limit', 10);
+        $offset = $request->input('offset', 0);
+
+        return response()->json($this->transactionService->getTransactions($filters, $limit, $offset));
     }
 }

@@ -17,8 +17,8 @@ class TransactionService
      * @param array $filters
      * @return array
      */
-    public function getTransactions(array $filters): array
+    public function getTransactions(array $filters, int $limit = 10, int $offset = 0): array
     {
-        return $this->transactionRepository->getFilteredTransactions($filters);
+        return $this->transactionRepository->getFilteredTransactions($filters, $limit, $offset);
     }
 }
