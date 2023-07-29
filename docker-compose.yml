@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # PHP-FPM service
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: easy-cash-app
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_KEY: easyCash
+
+  # Nginx service
+  nginx:
+    image: nginx:latest
+    container_name: easy-cash-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - .:/var/www/html
+    depends_on:
+      - php
